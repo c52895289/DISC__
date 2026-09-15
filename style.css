@@ -67,41 +67,25 @@ body{
 .loading span{width:32px;height:32px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* 首頁四個手指：使用獨立透明 PNG/WebP 疊圖，四隻共用同一條動畫時間軸。 */
-.finger-overlays{
+/* 首頁四個「手指」縮放提示。使用原首頁手指裁切素材，避免把整張卡片一起放大。 */
+.finger-overlays{position:absolute;inset:0;z-index:7;pointer-events:none;display:none}
+.stage.home-motion .finger-overlays{display:block}
+.finger{
   position:absolute;
-  inset:0;
-  z-index:7;
-  pointer-events:none;
-  display:none;
-  overflow:visible;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  transform-origin:center center;
+  animation:fingerPulse 1.55s ease-in-out infinite;
+  will-change:transform,filter;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.22));
 }
-.stage.home-motion .finger-overlays,.stage.page-home .finger-overlays{display:block !important}
-.stage.page-home .finger,
-.stage.home-motion .finger{
-  position:absolute;
-  display:block !important;
-  object-fit:contain;
-  height:auto;
-  max-width:none;
-  margin:0;
-  padding:0;
-  border:0;
-  opacity:1 !important;
-  visibility:visible !important;
-  transform-origin:50% 50%;
-  animation:fingerPulseHome 1.20s ease-in-out infinite !important;
-  will-change:transform;
-  user-select:none;
-  -webkit-user-drag:none;
-}
-.finger.tiger{left:37.50%;top:64.45%;width:7.52%;height:auto}
-.finger.peacock{left:83.79%;top:64.52%;width:7.62%;height:auto}
-.finger.koala{left:36.91%;top:87.11%;width:8.30%;height:auto}
-.finger.owl{left:83.79%;top:87.37%;width:7.62%;height:auto}
-@keyframes fingerPulseHome{
-  0%,100%{transform:scale(.92);filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
-  50%{transform:scale(1.08);filter:drop-shadow(0 3px 4px rgba(0,0,0,.28))}
+.finger.tiger{left:37.50%;top:64.45%;width:7.52%;height:5.40%;background-image:url('../assets/finger_tiger.webp?v=5')}
+.finger.peacock{left:83.79%;top:64.52%;width:7.62%;height:5.40%;background-image:url('../assets/finger_peacock.webp?v=5')}
+.finger.koala{left:36.91%;top:87.11%;width:8.30%;height:7.10%;background-image:url('../assets/finger_koala.webp?v=5')}
+.finger.owl{left:83.79%;top:87.37%;width:7.62%;height:6.84%;background-image:url('../assets/finger_owl.webp?v=5')}
+@keyframes fingerPulse{
+  0%,100%{transform:scale(.92) translateY(0);filter:drop-shadow(0 2px 2px rgba(0,0,0,.20))}
+  50%{transform:scale(1.13) translateY(-1.5%);filter:drop-shadow(0 3px 4px rgba(0,0,0,.30))}
 }
 
 /* 動物攻略選單頁：只顯示「手指」本體。
@@ -220,35 +204,23 @@ body{
   52%{opacity:.2;transform:scale(.48) rotate(38deg)}
   70%{opacity:0;transform:scale(.22) rotate(55deg)}
 }
-/* 一道柔和的斜向亮光：改成橢圓光暈，避免掃光結尾出現明顯矩形/尖角邊緣 */
+/* 一道短暫的斜向亮光，只在上述標題裁切區內滑過 */
 .sparkle-overlay::before{
   content:"";
   position:absolute;
-  top:-55%;
-  left:-32%;
-  width:24%;
-  height:210%;
-  border-radius:50%;
-  transform:rotate(24deg) translateX(-320%);
-  background:radial-gradient(
-    ellipse at center,
-    rgba(255,255,255,.92) 0%,
-    rgba(255,255,255,.58) 18%,
-    rgba(255,255,255,.20) 38%,
-    rgba(255,255,255,.06) 56%,
-    transparent 74%
-  );
-  filter:blur(2.2px);
+  top:-35%; left:-28%;
+  width:16%; height:170%;
+  transform:rotate(24deg) translateX(-260%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.05) 20%,rgba(255,255,255,.95) 50%,rgba(255,255,255,.08) 80%,transparent);
+  filter:blur(1px);
   mix-blend-mode:screen;
   animation:titleSweep 2.8s ease-in-out infinite;
-  will-change:transform,opacity;
 }
 @keyframes titleSweep{
-  0%,28%{transform:rotate(24deg) translateX(-320%);opacity:0}
-  36%{opacity:.78}
-  58%{transform:rotate(24deg) translateX(620%);opacity:.78}
-  66%{opacity:0}
-  72%,100%{transform:rotate(24deg) translateX(620%);opacity:0}
+  0%,28%{transform:rotate(24deg) translateX(-260%);opacity:0}
+  38%{opacity:1}
+  62%{transform:rotate(24deg) translateX(720%);opacity:1}
+  72%,100%{transform:rotate(24deg) translateX(720%);opacity:0}
 }
 
 /* 頁面切換 */
@@ -273,7 +245,6 @@ body{
   .stage{width:min(100vw,calc(100dvh * 2 / 3));height:min(100dvh,calc(100vw * 3 / 2));max-width:100vw;max-height:100dvh}
 }
 @media (prefers-reduced-motion:reduce){
-  .sparkle,.page-enter{animation:none!important}
+  .sparkle,.finger,.page-enter{animation:none!important}
   .hotspot{transition:none}
 }
-

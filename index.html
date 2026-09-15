@@ -5,18 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b0b12">
 <title>DISC 增員攻心術</title>
-<link rel="stylesheet" href="css/style.css?v=17">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <main id="app" aria-label="DISC 增員攻心術互動網站">
   <section id="stage" class="stage" aria-live="polite">
-    <img id="pageImage" class="page-image" src="assets/home.webp?v=17" alt="DISC 增員攻心術首頁" draggable="false" decoding="async">
+    <img id="pageImage" class="page-image" src="assets/home.webp?v=5" alt="DISC 增員攻心術首頁" draggable="false" decoding="async">
     <div id="hotspots" class="hotspots"></div>
     <div id="fingerOverlays" class="finger-overlays" aria-hidden="true">
-      <img class="finger tiger" src="assets/finger_tiger.webp?v=17" alt="" draggable="false">
-      <img class="finger peacock" src="assets/finger_peacock.webp?v=17" alt="" draggable="false">
-      <img class="finger koala" src="assets/finger_koala.webp?v=17" alt="" draggable="false">
-      <img class="finger owl" src="assets/finger_owl.webp?v=17" alt="" draggable="false">
+      <span class="finger tiger"></span>
+      <span class="finger peacock"></span>
+      <span class="finger koala"></span>
+      <span class="finger owl"></span>
     </div>
     <div id="menuFingerOverlays" class="menu-finger-overlays" aria-hidden="true">
       <img class="menu-finger zone1" alt="" draggable="false">
@@ -28,11 +28,11 @@
       <span class="sparkle s4"></span><span class="sparkle s5"></span><span class="sparkle s6"></span>
       <span class="sparkle s7"></span><span class="sparkle s8"></span>
     </div>
-    <button id="musicControl" class="music-control" type="button" aria-label="關閉背景音樂">♫</button>
-    <audio id="bgm" loop autoplay preload="auto"></audio>
+    <button id="musicControl" class="music-control" type="button" aria-label="背景音樂開關">♫</button>
+    <audio id="bgm" loop preload="none"></audio>
     <div id="loading" class="loading" aria-hidden="true"><span></span></div>
   </section>
 </main>
-<script src="js/script.js?v=17" defer></script>
+<script src="js/script.js" defer></script>
 </body>
 </html>

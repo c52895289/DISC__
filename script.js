@@ -4,7 +4,7 @@ const HOTSPOTS = document.getElementById('hotspots');
 const STAGE = document.getElementById('stage');
 const LOADING = document.getElementById('loading');
 const MENU_FINGERS = document.getElementById('menuFingerOverlays');
-const FINGER_ASSETS = ['assets/finger_tiger.webp?v=17','assets/finger_peacock.webp?v=17','assets/finger_koala.webp?v=17','assets/finger_owl.webp?v=17'];
+const FINGER_ASSETS = ['assets/finger_tiger.webp?v=5','assets/finger_peacock.webp?v=5','assets/finger_koala.webp?v=5','assets/finger_owl.webp?v=5'];
 const BGM = document.getElementById('bgm');
 const MUSIC = document.getElementById('musicControl');
 let audioReady = false;
@@ -12,7 +12,7 @@ let musicOn = false;
 
 const PAGES = {
   home:{
-    img:'assets/home.webp?v=17',
+    img:'assets/home.webp?v=5',
     alt:'DISC 增員攻心術首頁',
     spots:[
       {label:'進入 D 型老虎攻略',x:2.5,y:46.8,w:47.5,h:22.0,to:'tigerMenu'},
@@ -22,52 +22,52 @@ const PAGES = {
     ]
   },
   tigerMenu:{
-    img:'assets/tiger_menu.webp?v=17',alt:'D 型老虎攻略',back:'home',
+    img:'assets/tiger_menu.webp?v=5',alt:'D 型老虎攻略',back:'home',
     spots:[
       {label:'老虎線索辨識',x:2,y:29.0,w:96,h:22.5,to:'tigerClues'},
       {label:'老虎地雷區',x:2,y:51.8,w:96,h:21.5,to:'tigerMines'},
       {label:'老虎任務解鎖',x:2,y:74.0,w:96,h:22.0,to:'tigerMission'}
     ]
   },
-  tigerClues:{img:'assets/tiger_clues.webp?v=17',alt:'D 型老虎線索辨識',back:'tigerMenu'},
-  tigerMines:{img:'assets/tiger_mines.webp?v=17',alt:'D 型老虎地雷區',back:'tigerMenu'},
-  tigerMission:{img:'assets/tiger_mission.webp?v=17',alt:'D 型老虎任務解鎖',back:'tigerMenu'},
+  tigerClues:{img:'assets/tiger_clues.webp?v=5',alt:'D 型老虎線索辨識',back:'tigerMenu'},
+  tigerMines:{img:'assets/tiger_mines.webp?v=5',alt:'D 型老虎地雷區',back:'tigerMenu'},
+  tigerMission:{img:'assets/tiger_mission.webp?v=5',alt:'D 型老虎任務解鎖',back:'tigerMenu'},
 
   peacockMenu:{
-    img:'assets/peacock_menu.webp?v=17',alt:'I 型孔雀攻略',back:'home',
+    img:'assets/peacock_menu.webp?v=5',alt:'I 型孔雀攻略',back:'home',
     spots:[
       {label:'孔雀線索辨識',x:2,y:29.0,w:96,h:22.5,to:'peacockClues'},
       {label:'孔雀地雷區',x:2,y:51.8,w:96,h:21.5,to:'peacockMines'},
       {label:'孔雀任務解鎖',x:2,y:74.0,w:96,h:22.0,to:'peacockMission'}
     ]
   },
-  peacockClues:{img:'assets/peacock_clues.webp?v=17',alt:'I 型孔雀線索辨識',back:'peacockMenu'},
-  peacockMines:{img:'assets/peacock_mines.webp?v=17',alt:'I 型孔雀地雷區',back:'peacockMenu'},
-  peacockMission:{img:'assets/peacock_mission.webp?v=17',alt:'I 型孔雀任務解鎖',back:'peacockMenu'},
+  peacockClues:{img:'assets/peacock_clues.webp?v=5',alt:'I 型孔雀線索辨識',back:'peacockMenu'},
+  peacockMines:{img:'assets/peacock_mines.webp?v=5',alt:'I 型孔雀地雷區',back:'peacockMenu'},
+  peacockMission:{img:'assets/peacock_mission.webp?v=5',alt:'I 型孔雀任務解鎖',back:'peacockMenu'},
 
   koalaMenu:{
-    img:'assets/koala_menu.webp?v=17',alt:'S 型無尾熊攻略',back:'home',
+    img:'assets/koala_menu.webp?v=5',alt:'S 型無尾熊攻略',back:'home',
     spots:[
       {label:'無尾熊線索辨識',x:2,y:29.0,w:96,h:22.5,to:'koalaClues'},
       {label:'無尾熊地雷區',x:2,y:51.8,w:96,h:21.5,to:'koalaMines'},
       {label:'無尾熊任務解鎖',x:2,y:74.0,w:96,h:22.0,to:'koalaMission'}
     ]
   },
-  koalaClues:{img:'assets/koala_clues.webp?v=17',alt:'S 型無尾熊線索辨識',back:'koalaMenu'},
-  koalaMines:{img:'assets/koala_mines.webp?v=17',alt:'S 型無尾熊地雷區',back:'koalaMenu'},
-  koalaMission:{img:'assets/koala_mission.webp?v=17',alt:'S 型無尾熊任務解鎖',back:'koalaMenu'},
+  koalaClues:{img:'assets/koala_clues.webp?v=5',alt:'S 型無尾熊線索辨識',back:'koalaMenu'},
+  koalaMines:{img:'assets/koala_mines.webp?v=5',alt:'S 型無尾熊地雷區',back:'koalaMenu'},
+  koalaMission:{img:'assets/koala_mission.webp?v=5',alt:'S 型無尾熊任務解鎖',back:'koalaMenu'},
 
   owlMenu:{
-    img:'assets/owl_menu.webp?v=17',alt:'C 型貓頭鷹攻略',back:'home',
+    img:'assets/owl_menu.webp?v=5',alt:'C 型貓頭鷹攻略',back:'home',
     spots:[
       {label:'貓頭鷹線索辨識',x:2,y:29.0,w:96,h:22.5,to:'owlClues'},
       {label:'貓頭鷹地雷區',x:2,y:51.8,w:96,h:21.5,to:'owlMines'},
       {label:'貓頭鷹任務解鎖',x:2,y:74.0,w:96,h:22.0,to:'owlMission'}
     ]
   },
-  owlClues:{img:'assets/owl_clues.webp?v=17',alt:'C 型貓頭鷹線索辨識',back:'owlMenu'},
-  owlMines:{img:'assets/owl_mines.webp?v=17',alt:'C 型貓頭鷹地雷區',back:'owlMenu'},
-  owlMission:{img:'assets/owl_mission.webp?v=17',alt:'C 型貓頭鷹任務解鎖',back:'owlMenu'}
+  owlClues:{img:'assets/owl_clues.webp?v=5',alt:'C 型貓頭鷹線索辨識',back:'owlMenu'},
+  owlMines:{img:'assets/owl_mines.webp?v=5',alt:'C 型貓頭鷹地雷區',back:'owlMenu'},
+  owlMission:{img:'assets/owl_mission.webp?v=5',alt:'C 型貓頭鷹任務解鎖',back:'owlMenu'}
 };
 
 let current = null;
@@ -111,7 +111,7 @@ function loadImage(src, token){
 }
 
 
-const MUSIC_SRC = 'audio/bgm.mp3?v=17';
+const MUSIC_SRC = 'audio/bgm.mp3?v=2';
 
 function showMusicControl(){
   MUSIC.hidden=false;
@@ -122,7 +122,7 @@ async function ensureMusic(autoplay=true){
   if(!BGM.src){
     BGM.volume = 0.45;
     BGM.preload = 'auto';
-    BGM.autoplay = true;
+    BGM.autoplay = false;
     BGM.src = MUSIC_SRC;
     BGM.load();
   }
@@ -154,13 +154,12 @@ MUSIC.addEventListener('click',async(e)=>{
   }
 });
 
-// 首頁載入立即顯示音符並嘗試自動播放。
-// 注意：Chrome/手機瀏覽器若禁止「有聲自動播放」，瀏覽器本身會擋住 play()；
-// 此時第一次點擊頁面或音符即可立即補播。
+// 首頁一進來就顯示音符並嘗試自動播放；若瀏覽器擋有聲 autoplay，
+// 保留音符讓使用者點一下即可播放。
 showMusicControl();
-BGM.autoplay = true;
 ensureMusic(true);
 
+// 若瀏覽器首次載入禁止有聲 autoplay，使用者第一次點擊頁面時立即補播。
 document.addEventListener('pointerdown',()=>{
   if(BGM.paused) ensureMusic(true);
 },{once:true,passive:true});
@@ -179,12 +178,11 @@ async function go(id, push=true){
     renderSpots(page);
 
     // 首頁四個角色手指：進入首頁時同時啟動縮放提示；離開首頁立即隱藏。
-    // 首頁四隻手指完全同步縮放；用移除/重加 class + reflow 重啟 CSS 動畫，
-    // 不呼叫 cancelAnimations，避免瀏覽器留下被取消的動畫狀態。
-    STAGE.classList.remove('home-motion');
-    if(id === 'home'){
+    STAGE.classList.toggle('home-motion', id === 'home');
+    if(id === 'home') {
+      const homeFingers = STAGE.querySelectorAll('.finger');
+      homeFingers.forEach(el => el.getAnimations?.().forEach(a => a.cancel()));
       void STAGE.offsetWidth;
-      STAGE.classList.add('home-motion');
     }
 
     const menuMatch = id.match(/^(tiger|peacock|koala|owl)Menu$/);
@@ -193,7 +191,7 @@ async function go(id, push=true){
       const animal = menuMatch[1];
       const fingers = MENU_FINGERS.querySelectorAll('.menu-finger');
       fingers.forEach((el, i) => {
-        el.src = `assets/menu_hand_clean_${i+1}.png?v=17`;
+        el.src = `assets/menu_hand_clean_${i+1}.png?v=10`;
       });
       // 強制重新啟動同一時間點的動畫，讓每次進入攻略頁都三個一起縮放。
       MENU_FINGERS.classList.remove('show');
@@ -203,10 +201,6 @@ async function go(id, push=true){
     STAGE.classList.toggle('sparkle-on',true);
     [...STAGE.classList].filter(c=>c.startsWith('page-')).forEach(c=>STAGE.classList.remove(c));
     STAGE.classList.add(`page-${id}`);
-    if(id === 'home'){
-      void STAGE.offsetWidth;
-      STAGE.classList.add('home-motion');
-    }
     STAGE.classList.remove('page-enter');
     void STAGE.offsetWidth;
     STAGE.classList.add('page-enter');
