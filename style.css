@@ -76,12 +76,9 @@ body{
   display:none;
   overflow:visible;
 }
-.stage.home-motion .finger-overlays,
-.stage.page-home .finger-overlays{
-  display:block !important;
-}
-.stage.home-motion .finger,
-.stage.page-home .finger{
+.stage.home-motion .finger-overlays,.stage.page-home .finger-overlays{display:block !important}
+.stage.page-home .finger,
+.stage.home-motion .finger{
   position:absolute;
   display:block !important;
   object-fit:contain;
