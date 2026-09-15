@@ -1,0 +1,282 @@
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0}
+body{
+  overflow:hidden;
+  background:#0b0b12;
+  font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+}
+#app{
+  width:100vw;
+  height:100dvh;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+/* 以 1024×1536（2:3）原圖比例呈現。
+   桌機/平板優先滿高；手機優先完整顯示整張頁面，絕不裁切左右內容。 */
+.stage{
+  position:relative;
+  width:min(100vw, calc(100dvh * 2 / 3));
+  height:min(100dvh, calc(100vw * 3 / 2));
+  max-width:100vw;
+  max-height:100dvh;
+  aspect-ratio:2/3;
+  flex:0 0 auto;
+  overflow:hidden;
+  isolation:isolate;
+  background:#fff;
+  box-shadow:0 0 40px rgba(0,0,0,.28);
+}
+.page-image{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:fill;
+  user-select:none;
+  -webkit-user-drag:none;
+  opacity:1;
+}
+.hotspots{position:absolute;inset:0;z-index:5}
+.hotspot{
+  position:absolute;
+  display:block;
+  padding:0;
+  margin:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  border-radius:14px;
+  outline:none;
+  touch-action:manipulation;
+  transition:transform .12s ease,filter .12s ease,background .12s ease;
+}
+.hotspot:hover{background:rgba(255,255,255,.035);filter:brightness(1.04)}
+.hotspot:active{transform:scale(.965);background:rgba(255,255,255,.08)}
+.hotspot:focus-visible{box-shadow:0 0 0 3px rgba(255,255,255,.95),0 0 0 6px rgba(53,110,255,.8)}
+.hotspot.back{z-index:10}
+.loading{
+  position:absolute;inset:0;z-index:20;
+  display:grid;place-items:center;pointer-events:none;
+  background:rgba(8,8,14,.08);opacity:0;transition:opacity .18s ease;
+}
+.loading.show{opacity:1}
+.loading span{width:32px;height:32px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* 首頁四個手指：使用獨立透明 PNG/WebP 疊圖，四隻共用同一條動畫時間軸。 */
+.finger-overlays{
+  position:absolute;
+  inset:0;
+  z-index:7;
+  pointer-events:none;
+  display:none;
+  overflow:visible;
+}
+.stage.home-motion .finger-overlays,
+.stage.page-home .finger-overlays{
+  display:block !important;
+}
+.stage.home-motion .finger,
+.stage.page-home .finger{
+  position:absolute;
+  display:block !important;
+  object-fit:contain;
+  height:auto;
+  max-width:none;
+  margin:0;
+  padding:0;
+  border:0;
+  opacity:1 !important;
+  visibility:visible !important;
+  transform-origin:50% 50%;
+  animation:fingerPulseHome 1.20s ease-in-out infinite !important;
+  will-change:transform;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.finger.tiger{left:37.50%;top:64.45%;width:7.52%;height:auto}
+.finger.peacock{left:83.79%;top:64.52%;width:7.62%;height:auto}
+.finger.koala{left:36.91%;top:87.11%;width:8.30%;height:auto}
+.finger.owl{left:83.79%;top:87.37%;width:7.62%;height:auto}
+@keyframes fingerPulseHome{
+  0%,100%{transform:scale(.92);filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+  50%{transform:scale(1.08);filter:drop-shadow(0 3px 4px rgba(0,0,0,.28))}
+}
+
+/* 動物攻略選單頁：只顯示「手指」本體。
+   手指使用從原始 1024×1536 頁面乾淨切出的透明 PNG，
+   三個手指共用同一動畫時間軸，因此會完全同步縮放。
+   不包含右箭頭、按鈕或底下背景圖片。 */
+.menu-finger-overlays{
+  position:absolute;
+  inset:0;
+  z-index:8;
+  pointer-events:none;
+  display:none;
+  overflow:visible;
+}
+.menu-finger-overlays.show{display:block}
+.menu-finger{
+  position:absolute;
+  left:88.87%;
+  width:4.30%;
+  height:auto;
+  display:block;
+  margin:0;
+  padding:0;
+  border:0;
+  object-fit:contain;
+  object-position:center;
+  transform-origin:50% 65%;
+  animation:menuFingerPulse 1.55s ease-in-out infinite;
+  will-change:transform,filter;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.14));
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.menu-finger.zone1{top:46.42%}
+.menu-finger.zone2{top:68.55%}
+.menu-finger.zone3{top:89.84%}
+
+@keyframes menuFingerPulse{
+  0%,100%{
+    transform:scale(.92);
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.12));
+  }
+  50%{
+    transform:scale(1.10);
+    filter:drop-shadow(0 3px 4px rgba(0,0,0,.25));
+  }
+}
+
+/* 標題專用閃亮特效：只在標題區域內播放，不會縮放、移動或覆蓋整張背景圖。 */
+.sparkle-overlay{
+  position:absolute;
+  z-index:25;
+  pointer-events:none;
+  overflow:hidden;
+  display:block;
+  left:8%; top:3%; width:70%; height:22%;
+  opacity:1;
+  clip-path:inset(0 round 2%);
+}
+/* 首頁：只框住「DISC 增員攻心術」主標題 */
+.stage.page-home .sparkle-overlay{
+  left:19%; top:4%; width:63%; height:21%;
+}
+/* 四種角色選單與各內容頁：只框住最上方主標題區 */
+.stage.page-tigerMenu .sparkle-overlay,
+.stage.page-peacockMenu .sparkle-overlay,
+.stage.page-koalaMenu .sparkle-overlay,
+.stage.page-owlMenu .sparkle-overlay,
+.stage.page-tigerClues .sparkle-overlay,
+.stage.page-tigerMines .sparkle-overlay,
+.stage.page-tigerMission .sparkle-overlay,
+.stage.page-peacockClues .sparkle-overlay,
+.stage.page-peacockMines .sparkle-overlay,
+.stage.page-peacockMission .sparkle-overlay,
+.stage.page-koalaClues .sparkle-overlay,
+.stage.page-koalaMines .sparkle-overlay,
+.stage.page-koalaMission .sparkle-overlay,
+.stage.page-owlClues .sparkle-overlay,
+.stage.page-owlMines .sparkle-overlay,
+.stage.page-owlMission .sparkle-overlay{
+  left:8%; top:3%; width:70%; height:22%;
+}
+.sparkle{
+  position:absolute;
+  width:4.8%;
+  aspect-ratio:1;
+  opacity:0;
+  transform:scale(.35) rotate(0deg);
+  background:linear-gradient(90deg,transparent 42%,rgba(255,255,255,.98) 46%,#fff 50%,rgba(255,255,255,.98) 54%,transparent 58%),
+             linear-gradient(0deg,transparent 42%,rgba(255,255,255,.98) 46%,#fff 50%,rgba(255,255,255,.98) 54%,transparent 58%);
+  filter:drop-shadow(0 0 3px rgba(255,255,255,.95)) drop-shadow(0 0 7px rgba(255,214,72,.85));
+  animation:twinkle 1.65s ease-in-out infinite;
+}
+.sparkle::before,
+.sparkle::after{
+  content:"";
+  position:absolute;
+  inset:20%;
+  background:#fff;
+  transform:rotate(45deg);
+  filter:blur(.2px);
+}
+.sparkle::after{transform:rotate(-45deg)}
+.sparkle.s1{left:5%;top:35%;animation-delay:0s}
+.sparkle.s2{left:22%;top:8%;animation-delay:.32s}
+.sparkle.s3{left:42%;top:55%;animation-delay:.66s}
+.sparkle.s4{left:61%;top:15%;animation-delay:.18s}
+.sparkle.s5{left:76%;top:48%;animation-delay:.82s}
+.sparkle.s6{left:89%;top:5%;animation-delay:.48s}
+.sparkle.s7{left:34%;top:78%;animation-delay:1.02s}
+.sparkle.s8{left:68%;top:76%;animation-delay:1.25s}
+@keyframes twinkle{
+  0%,100%{opacity:0;transform:scale(.28) rotate(0deg)}
+  18%{opacity:1;transform:scale(.72) rotate(12deg)}
+  35%{opacity:1;transform:scale(1.18) rotate(25deg)}
+  52%{opacity:.2;transform:scale(.48) rotate(38deg)}
+  70%{opacity:0;transform:scale(.22) rotate(55deg)}
+}
+/* 一道柔和的斜向亮光：改成橢圓光暈，避免掃光結尾出現明顯矩形/尖角邊緣 */
+.sparkle-overlay::before{
+  content:"";
+  position:absolute;
+  top:-55%;
+  left:-32%;
+  width:24%;
+  height:210%;
+  border-radius:50%;
+  transform:rotate(24deg) translateX(-320%);
+  background:radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,.92) 0%,
+    rgba(255,255,255,.58) 18%,
+    rgba(255,255,255,.20) 38%,
+    rgba(255,255,255,.06) 56%,
+    transparent 74%
+  );
+  filter:blur(2.2px);
+  mix-blend-mode:screen;
+  animation:titleSweep 2.8s ease-in-out infinite;
+  will-change:transform,opacity;
+}
+@keyframes titleSweep{
+  0%,28%{transform:rotate(24deg) translateX(-320%);opacity:0}
+  36%{opacity:.78}
+  58%{transform:rotate(24deg) translateX(620%);opacity:.78}
+  66%{opacity:0}
+  72%,100%{transform:rotate(24deg) translateX(620%);opacity:0}
+}
+
+/* 頁面切換 */
+.page-enter{animation:pageIn .32s cubic-bezier(.2,.75,.25,1)}
+@keyframes pageIn{from{opacity:.25;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+
+.music-control{
+  position:absolute;z-index:30;right:2.2%;top:1.4%;width:7.5%;aspect-ratio:1;
+  border:2px solid #111;border-radius:50%;background:rgba(255,255,255,.9);color:#111;
+  font-size:clamp(12px,2.1vw,22px);cursor:pointer;box-shadow:0 2px 0 #111;touch-action:manipulation;
+  display:grid;place-items:center;opacity:1;
+}
+.music-control:active{transform:scale(.9)}
+.music-control.off{opacity:.58}
+
+@media (max-width:480px){
+  #app{padding:0}
+  .stage{width:100vw;max-width:100vw;max-height:100dvh}
+  .hotspot{border-radius:10px}
+}
+@media (max-height:620px){
+  .stage{width:min(100vw,calc(100dvh * 2 / 3));height:min(100dvh,calc(100vw * 3 / 2));max-width:100vw;max-height:100dvh}
+}
+@media (prefers-reduced-motion:reduce){
+  .sparkle,.page-enter{animation:none!important}
+  .hotspot{transition:none}
+}
+
